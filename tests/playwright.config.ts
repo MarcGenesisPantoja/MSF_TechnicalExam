@@ -16,21 +16,21 @@ const e2eProjects = appBaseUrl
         name: 'setup',
         testDir: './e2e',
         testMatch: /auth\.setup\.ts/,
-        use: { ...devices['Desktop Chrome'], baseURL: appBaseUrl },
+        use: { ...devices['Desktop Chrome'], baseURL: appBaseUrl, channel: process.env.PW_CHANNEL || undefined },
       },
       {
         name: 'e2e',
         testDir: './e2e',
         testMatch: /.*\.spec\.ts/,
         dependencies: ['setup'],
-        use: { ...devices['Desktop Chrome'], baseURL: appBaseUrl },
+        use: { ...devices['Desktop Chrome'], baseURL: appBaseUrl, channel: process.env.PW_CHANNEL || undefined },
       },
     ]
   : [];
 
 export default defineConfig({
-  timeout: 60_000,
-  expect: { timeout: 10_000 },
+  timeout: 120_000,
+  expect: { timeout: 30_000 }, // Personal Environments can take 10s+ to load a screen
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: 1, // e2e tests share one database; keep them ordered

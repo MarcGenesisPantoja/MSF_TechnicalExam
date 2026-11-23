@@ -35,7 +35,8 @@ export class ServiceFinder {
   }
 
   async filterType(label: string): Promise<void> {
-    await this.page.getByTestId('finder-type').selectOption({ label });
+    // The data-testid sits on the OutSystems UI wrapper; the native <select> is inside it.
+    await this.page.getByTestId('finder-type').locator('select').selectOption({ label });
   }
 
   syncStatuses(): Locator {

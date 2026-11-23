@@ -205,7 +205,7 @@ mapping actions in `MSFSupportFinder_IS`.
 
    The data.gov.sg base URL is the REST API's effective URL, also changeable per environment in
    Service Center (`MSFSupportFinder_IS` > Integrations).
-3. In the Users application, create `officer1` (no extra role) and `admin1` (role `SyncAdmin`).
+3. In the Users application, give the `SyncAdmin` role to the users who may start a sync. The e2e tests use `edward.williams@example.com` (no role) and `andrea.mccarthy@example.com` (`SyncAdmin`).
 4. Sign in as `admin1` and choose **Sync now**, or wait for the 02:00 timer.
 
 ---
@@ -317,6 +317,18 @@ through a central egress VPC instead of the NAT gateway created here.
 | Contract tests | The live data.gov.sg API and files still match what the integration expects | Internet | `npm run test:contract` |
 | End-to-end tests | Directory search and filters, empty state, Sync now, role restriction, sign-in redirect | Deployed app + test users | `npm run test:e2e` |
 
+### Latest end-to-end run
+
+24 November 2026, against the Personal Environment, in Chrome: **11 passed** (2 sign-in
+steps and 9 tests) in 2.8 minutes. The two test users are `edward.williams@example.com`
+(no role) and `andrea.mccarthy@example.com` (`SyncAdmin`); their password is not stored in
+this repository.
+
+Writing the tests surfaced two issues that were fixed in the app: a `data-testid` attached to
+the wrong widget, and a type filter without an "All types" option. The suite also needed
+longer waits, because a Personal Environment can take over 10 seconds to load a screen
+for the first time.
+
 ### Run locally
 
 ```bash
@@ -376,6 +388,8 @@ The sign-in step works with the default Login screen; `login-username`, `login-p
 | IaC | push, pull request | `terraform fmt -check`, `validate`, TFLint, Checkov security scan |
 | Contract tests | push, pull request, daily 01:00 SGT | type check, fixture tests, live contract tests; report uploaded |
 | End-to-end tests | manual (`run_e2e`) | Playwright against the deployed app; trace and screenshots kept on failure |
+
+To run the browser tests with the installed Chrome instead of downloading one, set `PW_CHANNEL=chrome`.
 
 E2E credentials come from the `personal-env` GitHub environment: usernames and
 `APP_BASE_URL` as variables, passwords as secrets. Nothing sensitive is committed. Checkov
