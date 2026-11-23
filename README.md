@@ -9,12 +9,16 @@ This repository holds everything around the OutSystems solution:
 
 | Deliverable | Location |
 |---|---|
+| OutSystems Solution Pack | [`MSFSupportFinder.osp`](MSFSupportFinder.osp) |
 | Infrastructure as Code | [`infra/terraform`](infra/terraform) |
 | Automated tests | [`tests`](tests) |
 | CI pipeline | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) |
 | Documentation | this file |
 
-The application itself is submitted as an OutSystems Solution Pack (`.osp`).
+The Solution Pack contains the four application modules only (`MSFSupportFinder`,
+`MSFSupportFinder_CS`, `MSFSupportFinder_IS`, `MSFSupportFinder_Pat`). Platform modules such as
+OutSystems UI and Users are left out on purpose, so importing it never replaces the versions
+already installed in the target environment.
 
 > The only data used is the public directory of service centres published by MSF on
 > data.gov.sg. The application stores no personal data.
@@ -191,7 +195,7 @@ mapping actions in `MSFSupportFinder_IS`.
 
 ## 3. Getting started
 
-1. In Service Center, go to **Factory > Solutions > Upload and Publish** and select the `.osp`.
+1. In Service Center, go to **Factory > Solutions > Upload and Publish** and select `MSFSupportFinder.osp`.
 2. In Service Center, open `MSFSupportFinder_CS` and review the site properties:
 
    | Site property | Default | Notes |
