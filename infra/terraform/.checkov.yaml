@@ -1,0 +1,19 @@
+# Checks skipped on purpose, each with the reason.
+skip-check:
+  # ALB access log bucket: ALB log delivery does not support SSE-KMS.
+  - CKV_AWS_145
+  # Access-log and backup buckets do not need their own access logging (would recurse).
+  - CKV_AWS_18
+  # Cross-region replication is a DR decision taken per environment, not in this baseline.
+  - CKV_AWS_144
+  # S3 event notifications are not used.
+  - CKV2_AWS_62
+  # The public ALB is fronted by WAF (aws_wafv2_web_acl_association.alb); Checkov cannot always resolve it.
+  - CKV2_AWS_28
+  # RDS IAM authentication is not supported for SQL Server.
+  - CKV_AWS_161
+  # Multi-AZ, ALB deletion protection and 1-year log retention are switched on per
+  # environment through variables (see environments/prd.tfvars); dev keeps them off for cost.
+  - CKV_AWS_157
+  - CKV_AWS_150
+  - CKV_AWS_338

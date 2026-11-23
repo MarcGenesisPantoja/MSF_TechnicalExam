@@ -1,0 +1,30 @@
+# Node / Playwright
+node_modules/
+tests/test-results/
+tests/playwright-report/
+tests/blob-report/
+tests/e2e/.auth/
+
+# Local secrets
+.env
+*.env
+!.env.example
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+*.backend.hcl
+!*.backend.hcl.example
+.terraform.lock.hcl.bak
+
+# OutSystems exports are attached to the submission, not versioned here
+*.oml
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

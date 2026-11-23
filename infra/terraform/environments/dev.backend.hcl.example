@@ -1,0 +1,5 @@
+bucket         = "supportfinder-tfstate-111111111111"
+key            = "dev/terraform.tfstate"
+region         = "ap-southeast-1"
+dynamodb_table = "supportfinder-tf-locks"
+encrypt        = true
