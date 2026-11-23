@@ -1,5 +1,6 @@
 <powershell>
-# Rendered by Terraform templatefile(): $${...} is a literal ${...} after rendering.
+# Rendered by Terraform templatefile(): a doubled dollar sign before a brace is
+# written out as a single literal dollar sign.
 # Prepares a Windows Server 2022 instance to receive the OutSystems Platform Server.
 # The Platform Server installer itself is licensed and installed in a separate,
 # documented step (see infra/README.md) so this script stays free of licence material.
