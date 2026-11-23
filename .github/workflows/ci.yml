@@ -31,11 +31,12 @@ jobs:
       run:
         working-directory: infra/terraform
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.9.8
+          terraform_wrapper: false
 
       - name: Format
         run: terraform fmt -check -recursive
@@ -44,7 +45,12 @@ jobs:
         run: terraform init -backend=false -input=false
 
       - name: Validate
-        run: terraform validate
+        # Diagnostics are turned into annotations so they show on the commit and PR.
+        run: |
+          terraform validate -json > validate.json || true
+          jq -r '.diagnostics[] |
+            "::\(if .severity == "error" then "error" else "warning" end) file=infra/terraform/\(.range.filename // "main.tf"),line=\(.range.start.line // 1)::\(.summary): \(.detail // "")"' validate.json
+          jq -e '.valid' validate.json > /dev/null
 
       - uses: terraform-linters/setup-tflint@v4
 
@@ -68,9 +74,9 @@ jobs:
       run:
         working-directory: tests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -105,9 +111,9 @@ jobs:
       run:
         working-directory: tests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
