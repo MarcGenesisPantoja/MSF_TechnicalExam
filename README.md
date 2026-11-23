@@ -160,7 +160,7 @@ sequenceDiagram
         CS->>CS: insert SyncRun (Running), commit
         CS->>IS: DataGov_GetDatasetFile(datasetId)
         IS->>API: GET /datasets/{id}/poll-download
-        API-->>IS: 201 { code: 0, data: { url } }
+        API-->>IS: HTTP 201 with signed file URL
         IS->>API: GET signed file URL
         API-->>IS: GeoJSON FeatureCollection
         IS-->>CS: List of ServiceCentreRecord
@@ -244,31 +244,31 @@ Cloud (GCC). The same code is used for each environment, with different variable
 
 ```mermaid
 flowchart TB
-    U[Officers] -->|HTTPS| WAF[AWS WAF<br/>managed rules + rate limit]
-    WAF --> ALB[Application Load Balancer<br/>TLS 1.2+, HTTP redirected]
+    U["Officers"] -->|HTTPS| WAF["AWS WAF<br/>managed rules + rate limit"]
+    WAF --> ALB["Application Load Balancer<br/>TLS 1.2+, HTTP redirected"]
 
-    subgraph VPC[VPC, 2-3 availability zones]
-        subgraph PUB[Public subnets]
+    subgraph VPC["VPC, 2-3 availability zones"]
+        subgraph PUB["Public subnets"]
             ALB
-            NAT[NAT gateway]
+            NAT["NAT gateway"]
         end
-        subgraph APP[Private app subnets]
-            FE1[Front-end 1<br/>Windows + IIS]
-            FE2[Front-end 2..n]
-            DC[Deployment controller]
+        subgraph APP["Private app subnets"]
+            FE1["Front-end 1<br/>Windows + IIS"]
+            FE2["Front-end 2 to n"]
+            DC["Deployment controller"]
         end
-        subgraph DATA[Private data subnets, no internet route]
-            RDS[(RDS SQL Server<br/>encrypted, Multi-AZ in prd)]
+        subgraph DATA["Private data subnets, no internet route"]
+            RDS[("RDS SQL Server<br/>encrypted, Multi-AZ in prd")]
         end
     end
 
     ALB --> FE1 & FE2
     FE1 & FE2 <--> DC
     FE1 & FE2 & DC --> RDS
-    FE1 & FE2 & DC -->|data.gov.sg, updates| NAT
-    RDS -.native .bak.-> S3[(S3 backups<br/>KMS, versioned)]
-    FE1 & FE2 & DC -.logs, metrics.-> CW[CloudWatch<br/>alarms, dashboard]
-    CW --> SNS[SNS alerts]
+    FE1 & FE2 & DC -->|"data.gov.sg, updates"| NAT
+    RDS -.->|"native .bak files"| S3[("S3 backups<br/>KMS, versioned")]
+    FE1 & FE2 & DC -.->|"logs, metrics"| CW["CloudWatch<br/>alarms, dashboard"]
+    CW --> SNS["SNS alerts"]
 ```
 
 ### What it creates
