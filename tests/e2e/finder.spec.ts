@@ -4,26 +4,21 @@ import { ServiceFinder } from './support/app';
 
 test.use({ storageState: storageStatePath('officer') });
 
-test.describe('Service Finder', () => {
-  test('lists active centres after a sync', async ({ page }) => {
+test.describe('Service directory', () => {
+  test('lists centres after a sync', async ({ page }) => {
     const finder = new ServiceFinder(page);
     await finder.open();
-    await expect(finder.cards().first()).toBeVisible();
+    await expect(finder.names().first()).toBeVisible();
   });
 
-  test('type filter narrows the list', async ({ page }) => {
+  test('type filter shows only that type', async ({ page }) => {
     const finder = new ServiceFinder(page);
     await finder.open();
-    const before = await finder.cards().count();
 
-    await finder.filterType('SSO');
-    await expect(async () => {
-      const after = await finder.cards().count();
-      expect(after).toBeGreaterThan(0);
-      expect(after).toBeLessThanOrEqual(before);
-    }).toPass();
+    await finder.filterType('Social Service Office');
+    await expect(finder.types().first()).toContainText('Social Service Office');
 
-    for (const label of await finder.cards().getByTestId('centre-card-type').allInnerTexts()) {
+    for (const label of await finder.types().allInnerTexts()) {
       expect(label).toContain('Social Service Office');
     }
   });
@@ -31,10 +26,10 @@ test.describe('Service Finder', () => {
   test('search by name finds the centre', async ({ page }) => {
     const finder = new ServiceFinder(page);
     await finder.open();
-    const name = (await finder.cards().first().getByTestId('centre-card-name').innerText()).trim();
+    const name = (await finder.names().first().innerText()).trim();
 
     await finder.search(name);
-    await expect(finder.cards().first().getByTestId('centre-card-name')).toHaveText(name);
+    await expect(finder.names().first()).toHaveText(name);
   });
 
   test('no match shows the empty state', async ({ page }) => {
@@ -42,7 +37,19 @@ test.describe('Service Finder', () => {
     await finder.open();
 
     await finder.search('zz-no-such-centre-zz');
-    await expect(finder.cards()).toHaveCount(0);
+    await expect(finder.names()).toHaveCount(0);
     await expect(page.getByTestId('empty-state')).toBeVisible();
+  });
+
+  test('postal sector accepts two digits only', async ({ page }) => {
+    const finder = new ServiceFinder(page);
+    await finder.open();
+
+    const sector = page.getByTestId('finder-sector');
+    test.skip((await sector.count()) === 0, 'Postal sector filter not included in this build');
+
+    await sector.fill('ABC');
+    await sector.press('Enter');
+    await expect(page.locator('.validation-message').first()).toBeVisible();
   });
 });

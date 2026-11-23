@@ -1,26 +1,21 @@
 import { expect, test } from '@playwright/test';
-import { asRole } from './support/app';
+import { asRole, ServiceFinder } from './support/app';
 
 /**
- * Role checks from the UI side. The server actions enforce the same rules;
- * these tests only confirm users are not offered actions they cannot perform.
+ * Role checks from the UI side. Sync_Now enforces the same rule on the server;
+ * this only confirms users are not offered an action they cannot perform.
  */
 
-test('officer cannot open Sync Status', async ({ browser }) => {
+test('user without SyncAdmin does not see Sync now', async ({ browser }) => {
   const page = await asRole(browser, 'officer');
-  await page.goto('SyncStatus');
-  await expect(page.getByTestId('sync-now')).toHaveCount(0);
-  await page.context().close();
-});
+  const finder = new ServiceFinder(page);
+  await finder.open();
 
-test('supervisor cannot open Sync Status', async ({ browser }) => {
-  const page = await asRole(browser, 'supervisor');
-  await page.goto('SyncStatus');
   await expect(page.getByTestId('sync-now')).toHaveCount(0);
   await page.context().close();
 });
 
 test('signed-out user is sent to login', async ({ page }) => {
-  await page.goto('ReferralList');
+  await page.goto('ServiceFinder');
   await expect(page).toHaveURL(/\/Login/i);
 });

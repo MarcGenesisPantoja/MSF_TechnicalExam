@@ -1,8 +1,9 @@
-# MSF Support Services Finder & Referral Tracker
+# MSF Service Directory
 
-An OutSystems 11 application that lets social service officers find MSF support centres
-(Family Service Centres, Social Service Offices and Student Care Centres) from the
-public datasets on data.gov.sg, refer a client to one, and track the referral to closure.
+An OutSystems 11 application that keeps a searchable directory of MSF support centres
+(Family Service Centres, Social Service Offices and Student Care Centres) in sync with the
+public datasets on data.gov.sg. A nightly timer refreshes the directory; officers search it
+by name, type and postal sector.
 
 This repository holds everything around the OutSystems solution:
 
@@ -15,8 +16,8 @@ This repository holds everything around the OutSystems solution:
 
 The application itself is submitted as an OutSystems Solution Pack (`.osp`).
 
-> All client data in the application is synthetic. The only real data used is the public
-> directory of service centres published by MSF on data.gov.sg.
+> The only data used is the public directory of service centres published by MSF on
+> data.gov.sg. The application stores no personal data.
 
 ---
 
@@ -30,7 +31,7 @@ The application itself is submitted as an OutSystems Solution Pack (`.osp`).
 6. [CI pipeline](#6-ci-pipeline)
 7. [Operations runbook](#7-operations-runbook)
 8. [Design decisions and trade-offs](#8-design-decisions-and-trade-offs)
-9. [Known limitations](#9-known-limitations)
+9. [Scope and next steps](#9-scope-and-next-steps)
 
 ```
 .
@@ -41,7 +42,7 @@ The application itself is submitted as an OutSystems Solution Pack (`.osp`).
 └── tests/
     ├── contract/                data.gov.sg contract tests and fixture tests
     ├── e2e/                     Playwright browser tests against the deployed app
-    ├── fixtures/geojson/        sample and broken payloads, also bundled in the app
+    ├── fixtures/geojson/        sample and broken payloads
     └── src/                     dataset field mappings and contract rules
 ```
 
@@ -53,9 +54,8 @@ The application itself is submitted as an OutSystems Solution Pack (`.osp`).
 
 | Role | Can do |
 |---|---|
-| Officer | Search centres, refer a client, withdraw own referrals, view referrals |
-| Supervisor | Everything an officer can, plus accept, reject and close referrals |
-| SyncAdmin | View sync history, run a sync on demand, load sample data |
+| Any signed-in user | Search and filter the directory, see when each dataset was last synced |
+| SyncAdmin | Everything above, plus start a sync on demand |
 
 ### Architecture
 
@@ -68,10 +68,10 @@ flowchart LR
     end
 
     subgraph OS[OutSystems 11]
-        UI[MSFSupportFinder<br/>screens]
-        PAT[MSFSupportFinder_Pat<br/>reusable blocks]
-        CS[MSFSupportFinder_CS<br/>entities, logic, timer]
-        IS[MSFSupportFinder_IS<br/>REST integration]
+        UI["MSFSupportFinder<br/>ServiceFinder screen"]
+        PAT["MSFSupportFinder_Pat<br/>SyncStatusTag block"]
+        CS["MSFSupportFinder_CS<br/>entities, sync logic, timer"]
+        IS["MSFSupportFinder_IS<br/>REST integration"]
         DB[(SQL Server)]
     end
 
@@ -82,69 +82,49 @@ flowchart LR
     IS -- HTTPS --> DGS
 ```
 
-Dependencies only point downward. Screens never call the external API directly, and the
+Dependencies only point downward. The screen never calls the external API directly, and the
 integration module never touches entities, so a change in the data source is contained in
 one module.
 
-| Module | Responsibility |
-|---|---|
-| `MSFSupportFinder_IS` | Consumes the data.gov.sg API, maps each dataset's schema to one clean `ServiceCentreRecord` structure |
-| `MSFSupportFinder_CS` | Entities, business rules, role checks, `Timer_SyncServiceCentres`, site properties |
-| `MSFSupportFinder_Pat` | UI blocks with plain inputs: `StatusTag`, `ServiceCentreCard`, `StatusTimeline`, `ErrorBanner`, `EmptyState` |
-| `MSFSupportFinder` | Screens: Service Finder, Centre Detail, New Referral, Referral List, Referral Detail, Sync Status |
+| Module | Type | Responsibility |
+|---|---|---|
+| `MSFSupportFinder_IS` | Service | Consumes the data.gov.sg API; maps each dataset's schema to one `ServiceCentreRecord` structure; turns any failure into `Success = False` with a readable message |
+| `MSFSupportFinder_CS` | Service | Entities, sync logic, `Timer_SyncServiceCentres`, `SyncAdmin` role, site properties |
+| `MSFSupportFinder_Pat` | Library | `SyncStatusTag` block, which takes plain inputs and has no data dependency |
+| `MSFSupportFinder` | Reactive Web App | `ServiceFinder` screen |
 
 ### Data model
 
 ```mermaid
 erDiagram
     ServiceType ||--o{ ServiceCentre : classifies
-    ServiceCentre ||--o{ Referral : receives
-    Client ||--o{ Referral : "is referred"
-    Referral ||--o{ ReferralStatusHistory : "audit trail"
     ServiceType ||--o{ SyncRun : "synced by"
+    SyncStatus ||--o{ SyncRun : "outcome"
 
     ServiceCentre {
         string SourceKey "unique per ServiceType"
         string Name
+        string Address
         string PostalCode
+        string PostalSector
         bool IsActive "soft delete"
-    }
-    Referral {
-        string ReferenceNo "REF-YYYY-NNNNNN"
-        string Status
-    }
-    ReferralStatusHistory {
-        string FromStatus
-        string ToStatus
-        string ChangedBy
-        datetime ChangedOn
+        datetime LastSyncedOn
     }
     SyncRun {
-        string Status
+        string TriggeredBy "Timer or Manual"
+        datetime StartedOn
+        datetime EndedOn
         int RecordsRead
         int Inserted
         int Updated
         int Deactivated
         int Skipped
+        string ErrorMessage
     }
 ```
 
-### Referral lifecycle
-
-```mermaid
-stateDiagram-v2
-    [*] --> Submitted : Officer
-    Submitted --> Accepted : Supervisor
-    Submitted --> Rejected : Supervisor, remarks required
-    Submitted --> Withdrawn : Creating officer
-    Accepted --> Closed : Supervisor
-    Rejected --> [*]
-    Withdrawn --> [*]
-    Closed --> [*]
-```
-
-Transitions are enforced in `Referral_ChangeStatus` on the server, not only by hiding
-buttons. Every change writes a row to `ReferralStatusHistory`, which is insert-only.
+`ServiceType` and `SyncStatus` are static entities. `SyncRun` is the sync's own audit log:
+every run, manual or scheduled, leaves one row per dataset with its counts and any error.
 
 ### Nightly sync
 
@@ -158,7 +138,7 @@ sequenceDiagram
     T->>CS: Sync_All("Timer")
     loop each ServiceType, own exception scope
         CS->>CS: insert SyncRun (Running), commit
-        CS->>IS: DataGov_GetDatasetFile(datasetId)
+        CS->>IS: DataGov_GetDatasetFile(type, datasetId)
         IS->>API: GET /datasets/{id}/poll-download
         API-->>IS: HTTP 201 with signed file URL
         IS->>API: GET signed file URL
@@ -171,8 +151,11 @@ sequenceDiagram
 ```
 
 If the API is down or returns something unexpected, the run is marked `Failed`, the error is
-stored on `SyncRun`, and the existing directory stays untouched. Officers keep working on
-the last good data.
+stored on `SyncRun`, and the existing directory stays untouched. Users keep searching the last
+good data.
+
+**Sync now** does not run the sync inside the button's request. It wakes the timer, so the
+request returns at once and the sync runs under the timer's longer timeout.
 
 ---
 
@@ -198,6 +181,7 @@ contract tests now check for each of them.
 | `poll-download` answers **HTTP 201**, not 200 | The REST consume treats any 2xx as success |
 | An unknown dataset ID returns **404** with `{"error": "..."}` and no `code` field | The error message is passed through to `SyncRun.ErrorMessage` |
 | Anonymous calls are **rate limited (HTTP 429)** | Optional API key in a site property; datasets are fetched one at a time; a 429 fails that dataset's run and the next run retries |
+| The file URL is a **signed S3 link** that changes on every call | The URL travels in a header and `OnBeforeRequest` sets it as the request URL |
 | Student Care has a stable `UNIQUE_ID`; FSC and SSO only have `OBJECTID`, which can change when the file is republished | Source key is `UNIQUE_ID` for Student Care and `NAME + postal code` for FSC and SSO |
 
 The field mappings live in [`tests/src/datasets.ts`](tests/src/datasets.ts) and match the
@@ -207,14 +191,11 @@ mapping actions in `MSFSupportFinder_IS`.
 
 ## 3. Getting started
 
-### Install the application
-
-1. In Service Center, go to **Factory > Solutions > Upload and Publish**, and select the `.osp`.
+1. In Service Center, go to **Factory > Solutions > Upload and Publish** and select the `.osp`.
 2. In Service Center, open `MSFSupportFinder_CS` and review the site properties:
 
    | Site property | Default | Notes |
    |---|---|---|
-   | `DataGov_BaseUrl` | `https://api-open.data.gov.sg/v1/public/api` | |
    | `DataGov_DatasetId_FSC` | `d_add23c06f7267e799185c79ccaa2099b` | |
    | `DataGov_DatasetId_SSO` | `d_22cfe2aed0bf20a679ab59bcaf0f8248` | |
    | `DataGov_DatasetId_StudentCare` | `d_77e6e0d58ce4743dab1f26dfcbbeb6f4` | |
@@ -222,14 +203,10 @@ mapping actions in `MSFSupportFinder_IS`.
    | `Sync_IsEnabled` | `True` | Kill switch for the timer |
    | `Sync_MinRecordsGuard` | `5` | Below this, centres are not deactivated |
 
-3. In the Users application, create the test users and assign roles:
-   `officer1` (Officer), `supervisor1` (Supervisor), `admin1` (SyncAdmin).
-4. Sign in as `admin1`, open **Sync Status** and choose **Sync now**, or wait for the
-   02:00 timer. If data.gov.sg is unreachable, choose **Load sample data**, which loads the
-   fixtures in `tests/fixtures/geojson` that are bundled with the app.
-
-The bootstrap timer seeds ten synthetic clients (`Test Client 01` to `Test Client 10`) on the
-first publish.
+   The data.gov.sg base URL is the REST API's effective URL, also changeable per environment in
+   Service Center (`MSFSupportFinder_IS` > Integrations).
+3. In the Users application, create `officer1` (no extra role) and `admin1` (role `SyncAdmin`).
+4. Sign in as `admin1` and choose **Sync now**, or wait for the 02:00 timer.
 
 ---
 
@@ -338,7 +315,7 @@ through a central egress VPC instead of the NAT gateway created here.
 |---|---|---|---|
 | Fixture tests | Field mappings, postal code rules, and that each fixture shows the case it is named after | Nothing | `npm run test:offline` |
 | Contract tests | The live data.gov.sg API and files still match what the integration expects | Internet | `npm run test:contract` |
-| End-to-end tests | Search, referral lifecycle, validation, duplicate rule, role restrictions, sync | Deployed app + test users | `npm run test:e2e` |
+| End-to-end tests | Directory search and filters, empty state, Sync now, role restriction, sign-in redirect | Deployed app + test users | `npm run test:e2e` |
 
 ### Run locally
 
@@ -367,22 +344,26 @@ before the sync timer, so an upstream change fails the pipeline before it fails 
 
 `tests/fixtures/geojson` holds small real samples of each dataset and broken payloads:
 `empty-collection`, `missing-fields`, `malformed`, and the API's `not-geojson` error body.
-The same files are bundled as resources in `MSFSupportFinder_CS` and are used by
-**Load sample data**, so the parser can be tested without the network.
 
 ### Test IDs
 
 The end-to-end tests find widgets by `data-testid`, set in Service Studio under the widget's
 **Attributes**. This keeps the tests independent of styling and widget names.
 
-| Screen | Test IDs |
+| Widget on `ServiceFinder` | Test ID |
 |---|---|
-| Login | `login-username`, `login-password`, `login-submit` (optional; the default template is also supported) |
-| ServiceFinder | `finder-search`, `finder-type-FSC`, `finder-type-SSO`, `finder-type-StudentCare`, `finder-results`, `centre-card`, `centre-card-name`, `centre-card-type`, `empty-state` |
-| ServiceCentreDetail | `centre-name`, `centre-refer-button` |
-| ReferralNew | `referral-client`, `referral-reason`, `referral-urgency`, `referral-notes`, `referral-submit` |
-| ReferralDetail | `referral-reference`, `referral-status`, `referral-accept`, `referral-reject`, `referral-close`, `referral-withdraw`, `referral-remarks`, `referral-confirm`, `timeline-entry` |
-| SyncStatus | `sync-latest-row`, `sync-run-row`, `sync-now` |
+| Search input | `finder-search` |
+| Type dropdown | `finder-type` |
+| Postal sector input (optional) | `finder-sector` |
+| Name expression in each table row | `centre-name` |
+| Type expression in each table row | `centre-type` |
+| Container shown when the table is empty | `empty-state` |
+| `SyncStatusTag` block root (one per service type) | `sync-status` |
+| Expression with the latest sync time | `sync-last-run` |
+| Sync now button | `sync-now` |
+
+The sign-in step works with the default Login screen; `login-username`, `login-password` and
+`login-submit` are used instead if present.
 
 ---
 
@@ -406,12 +387,12 @@ exceptions are listed with reasons in [`infra/terraform/.checkov.yaml`](infra/te
 
 | Symptom | Where to look | Likely cause and action |
 |---|---|---|
-| Sync Status shows `Failed` | `SyncRun.ErrorMessage`; Service Center > Monitoring > Integrations | API down or 429: next run retries; use **Sync now** later or set `DataGov_ApiKey`. 404: dataset ID changed, update the site property |
-| Sync shows `PartialSuccess`, deactivation skipped | `SyncRun.RecordsRead` | Payload smaller than `Sync_MinRecordsGuard`. Check the file on data.gov.sg before lowering the guard |
+| A status tag shows `Failed` | `SyncRun.ErrorMessage`; Service Center > Monitoring > Integrations | API down or 429: next run retries; use **Sync now** later or set `DataGov_ApiKey`. 404: dataset ID changed, update the site property |
+| Status `PartialSuccess` | `SyncRun.RecordsRead`, `SyncRun.Skipped` | Payload smaller than `Sync_MinRecordsGuard` (deactivation skipped), or some records had invalid postal codes |
 | Many records `Skipped` | Daily contract test run | Field renamed upstream: update the mapping in `MSFSupportFinder_IS` and `tests/src/datasets.ts` together |
 | Timer did not run | Service Center > Monitoring > Timers; Environment Health | `Sync_IsEnabled` is false, or the scheduler service is stopped |
-| Slow screens | Service Center > Monitoring > Slow queries; RDS Performance Insights; `slow-responses` alarm | Missing index or an aggregate fetching too much |
-| Front-end unhealthy | `unhealthy-frontends` alarm; CloudWatch `iis` log stream | IIS app pool stopped or the server is out of disk |
+| `SignatureDoesNotMatch` from S3 | Integration log for `DataGovFile` | The signed URL was altered; check `OnBeforeRequest` sets `BaseURL` to the full URL and `URLPath` to empty |
+| Slow search | Service Center > Monitoring > Slow queries; RDS Performance Insights | Missing index or an aggregate fetching too many rows |
 
 ---
 
@@ -420,22 +401,29 @@ exceptions are listed with reasons in [`infra/terraform/.checkov.yaml`](infra/te
 * **Nightly sync instead of live calls.** Search is fast and keeps working when data.gov.sg
   is unavailable. The directory can be up to a day old, which is acceptable for centre
   addresses.
-* **Soft delete for centres.** Referrals keep pointing to a valid centre when it drops out of
-  the dataset. Inactive centres are hidden from search.
+* **Soft delete for centres.** A centre that drops out of the dataset is hidden, not deleted,
+  so anything that later references it (such as referrals) stays valid.
 * **Small-payload guard.** A broken or empty response cannot wipe the directory. The cost is
   that someone has to check when the guard trips.
 * **Manual sync wakes the timer.** The request returns immediately and the sync runs under the
   timer's timeout instead of the screen request's.
-* **Authorisation on the server.** Every write action checks the role itself. The UI hides
-  what a user cannot do, but that is for convenience, not security.
-* **No NRIC field.** The app cannot store national ID numbers, even by mistake.
+* **Authorisation on the server.** `Sync_Now` checks the `SyncAdmin` role itself; hiding the
+  button is for convenience, not security.
 * **Postal sector filter instead of distance.** It avoids a geocoding dependency. The stored
   coordinates allow distance sorting later (for example with OneMap).
 
-## 9. Known limitations
+## 9. Scope and next steps
 
-* No notifications to centres when a referral is created.
-* No bulk import of clients; clients are seeded synthetic records.
-* The Terraform has not been applied to a live AWS account as part of this assessment; it is
-  validated and scanned in CI.
-* The e2e tests change data (they create referrals) and are meant for a test environment only.
+This build is the directory and its data pipeline. The data model was designed so the
+following can be added without changing what exists:
+
+1. **Referral tracking**: `Client`, `Referral` and an insert-only `ReferralStatusHistory`
+   audit trail, with a Submitted, Accepted, Rejected, Closed and Withdrawn lifecycle enforced
+   on the server.
+2. **Distance search**: geocode a postal code with OneMap and sort centres by distance using
+   the stored coordinates.
+3. **Load sample data**: run the bundled fixtures through the same mapping path, as a
+   fallback when data.gov.sg is unreachable.
+
+Known limitation: the Terraform has not been applied to a live AWS account as part of this
+assessment; it is validated and scanned in CI.

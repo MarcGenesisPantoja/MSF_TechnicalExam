@@ -129,8 +129,6 @@ jobs:
           APP_BASE_URL: ${{ vars.APP_BASE_URL }}
           OFFICER_USERNAME: ${{ vars.OFFICER_USERNAME }}
           OFFICER_PASSWORD: ${{ secrets.OFFICER_PASSWORD }}
-          SUPERVISOR_USERNAME: ${{ vars.SUPERVISOR_USERNAME }}
-          SUPERVISOR_PASSWORD: ${{ secrets.SUPERVISOR_PASSWORD }}
           ADMIN_USERNAME: ${{ vars.ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
 

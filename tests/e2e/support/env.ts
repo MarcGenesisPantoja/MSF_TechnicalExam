@@ -1,6 +1,6 @@
 import { join } from 'node:path';
 
-export type Role = 'officer' | 'supervisor' | 'admin';
+export type Role = 'officer' | 'admin';
 
 const required = (name: string): string => {
   const v = process.env[name];
@@ -16,4 +16,4 @@ export const credentials = (role: Role): { username: string; password: string } 
 
 export const storageStatePath = (role: Role): string => join(__dirname, '..', '.auth', `${role}.json`);
 
-export const ROLES: Role[] = ['officer', 'supervisor', 'admin'];
+export const ROLES: Role[] = ['officer', 'admin'];
