@@ -1,0 +1,216 @@
+{
+  "type": "FeatureCollection",
+  "name": "STUDENTCARE",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.83992273230308,
+          1.2755054328312083
+        ]
+      },
+      "properties": {
+        "OBJECTID": 19796,
+        "AUDIT_DATE": null,
+        "AUDIT_STATUS": "Grade A",
+        "H_2014": null,
+        "H_2016": null,
+        "H_2018": null,
+        "H_2020": null,
+        "H_2022": null,
+        "H_2024": null,
+        "H_2026": null,
+        "NAME_OF_STUDENT_CARE_CENTRE": "Commit Learning SchoolHouse @ Cantonment Primary School",
+        "SCC_ADDRESS": "1, Cantonment Close, #-1, Cantonment Primary School, Singapore 088256",
+        "SCC_POSTAL_CODE": "88256",
+        "SCC_TELEPHONE": "80778218",
+        "SCC_EMAIL": "scfa_administrative@commitlearning.com.sg",
+        "BUSINESS_PROFILE": "Commercial Companies",
+        "UNIQUE_ID": 23284,
+        "SCFA_Y_N": "Y",
+        "MONTHLY_FEE": "$240",
+        "H_2028": null,
+        "ENROLMENT": 77,
+        "INC_CRC": "2F32584E9826A5B7",
+        "FMEL_UPD_D": "20260923195014"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.8240872569083,
+          1.27499032183412
+        ]
+      },
+      "properties": {
+        "OBJECTID": 19823,
+        "AUDIT_DATE": null,
+        "AUDIT_STATUS": "Grade A",
+        "H_2014": null,
+        "H_2016": null,
+        "H_2018": null,
+        "H_2020": null,
+        "H_2022": null,
+        "H_2024": null,
+        "H_2026": null,
+        "NAME_OF_STUDENT_CARE_CENTRE": "Ace@work Studentcare Pte Ltd (Radin Mas - 099840)",
+        "SCC_ADDRESS": "1, Bukit Purmei Ave, #-#01, Radin Mas Primary School, Singapore 099840",
+        "SCC_POSTAL_CODE": "99840",
+        "SCC_TELEPHONE": "62789611",
+        "SCC_EMAIL": "acermps099840@gmail.com",
+        "BUSINESS_PROFILE": "Commercial Companies",
+        "UNIQUE_ID": 23312,
+        "SCFA_Y_N": "Y",
+        "MONTHLY_FEE": "$230",
+        "H_2028": null,
+        "ENROLMENT": 131,
+        "INC_CRC": "A41BE3B12F38A07B",
+        "FMEL_UPD_D": "20260923195014"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.82795401562977,
+          1.2747404866872543
+        ]
+      },
+      "properties": {
+        "OBJECTID": 19837,
+        "AUDIT_DATE": null,
+        "AUDIT_STATUS": "Grade A",
+        "H_2014": null,
+        "H_2016": null,
+        "H_2018": null,
+        "H_2020": null,
+        "H_2022": null,
+        "H_2024": null,
+        "H_2026": null,
+        "NAME_OF_STUDENT_CARE_CENTRE": "Commit Learning Schoolhouse @ CHIJ (Kellock) - CLS Gaia Pte Ltd",
+        "SCC_ADDRESS": "1, Bukit Teresa Rd, #-00, Chij (Kellock), Singapore 099757",
+        "SCC_POSTAL_CODE": "99757",
+        "SCC_TELEPHONE": "80645068",
+        "SCC_EMAIL": "admission_cls_chijkellock@commitlearning.com.sg,scfa_administrative@commitlearning.com.sg",
+        "BUSINESS_PROFILE": "Commercial Companies",
+        "UNIQUE_ID": 23327,
+        "SCFA_Y_N": "Y",
+        "MONTHLY_FEE": "$240",
+        "H_2028": null,
+        "ENROLMENT": 109,
+        "INC_CRC": "768A7243A7D56EE5",
+        "FMEL_UPD_D": "20260923195014"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.77817519972356,
+          1.430639752203039
+        ]
+      },
+      "properties": {
+        "OBJECTID": 19666,
+        "AUDIT_DATE": null,
+        "AUDIT_STATUS": "Grade A",
+        "H_2014": null,
+        "H_2016": null,
+        "H_2018": null,
+        "H_2020": null,
+        "H_2022": null,
+        "H_2024": null,
+        "H_2026": null,
+        "NAME_OF_STUDENT_CARE_CENTRE": "Big Heart Student Care @ Fuchun",
+        "SCC_ADDRESS": "23, Woodlands Avenue 1, #-00, Fuchun Primary School, Singapore 739063",
+        "SCC_POSTAL_CODE": "739063",
+        "SCC_TELEPHONE": "98381634",
+        "SCC_EMAIL": "fuchun@shgstudentcare.com.sg,bigheart_administrator@shgstudentcare.com.sg",
+        "BUSINESS_PROFILE": "Commercial Companies",
+        "UNIQUE_ID": 23280,
+        "SCFA_Y_N": "Y",
+        "MONTHLY_FEE": "$290",
+        "H_2028": null,
+        "ENROLMENT": 120,
+        "INC_CRC": "A90BFC8F620D5E54",
+        "FMEL_UPD_D": "20260923195014"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.84582026924436,
+          1.304144071030619
+        ]
+      },
+      "properties": {
+        "OBJECTID": 19667,
+        "AUDIT_DATE": null,
+        "AUDIT_STATUS": "Grade A",
+        "H_2014": null,
+        "H_2016": null,
+        "H_2018": null,
+        "H_2020": null,
+        "H_2022": null,
+        "H_2024": null,
+        "H_2026": null,
+        "NAME_OF_STUDENT_CARE_CENTRE": "YMCA Student Care Centre @ St Margaret's",
+        "SCC_ADDRESS": "136, Sophia Road, #-00, St Margaret'S Primary School, Singapore 228197",
+        "SCC_POSTAL_CODE": "228197",
+        "SCC_TELEPHONE": "63335084",
+        "SCC_EMAIL": "smscc@ymca.edu.sg",
+        "BUSINESS_PROFILE": "Commercial Companies",
+        "UNIQUE_ID": 23108,
+        "SCFA_Y_N": "Y",
+        "MONTHLY_FEE": "$280",
+        "H_2028": null,
+        "ENROLMENT": 115,
+        "INC_CRC": "5F16530507C012E3",
+        "FMEL_UPD_D": "20260923195014"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.76017457614122,
+          1.3840883055491933
+        ]
+      },
+      "properties": {
+        "OBJECTID": 19668,
+        "AUDIT_DATE": null,
+        "AUDIT_STATUS": "Grade A",
+        "H_2014": null,
+        "H_2016": null,
+        "H_2018": null,
+        "H_2020": null,
+        "H_2022": null,
+        "H_2024": null,
+        "H_2026": null,
+        "NAME_OF_STUDENT_CARE_CENTRE": "Big Heart Student Care @ West View",
+        "SCC_ADDRESS": "31, Senja Road, #-00, West View Primary School, Singapore 677742",
+        "SCC_POSTAL_CODE": "677742",
+        "SCC_TELEPHONE": "98552910",
+        "SCC_EMAIL": "westview@shgstudentcare.com.sg,bigheart_administrator@shgstudentcare.com.sg",
+        "BUSINESS_PROFILE": "Commercial Companies",
+        "UNIQUE_ID": 23109,
+        "SCFA_Y_N": "Y",
+        "MONTHLY_FEE": "$290",
+        "H_2028": null,
+        "ENROLMENT": 138,
+        "INC_CRC": "58F468D7CE4E93FC",
+        "FMEL_UPD_D": "20260923195014"
+      }
+    }
+  ]
+}

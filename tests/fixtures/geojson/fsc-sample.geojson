@@ -1,0 +1,186 @@
+{
+  "type": "FeatureCollection",
+  "name": "FAMILY",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.84301285361794,
+          1.28119257621546
+        ]
+      },
+      "properties": {
+        "OBJECTID": 4482,
+        "ADDRESSBUILDINGNAME": null,
+        "ADDRESSFLOORNUMBER": "1",
+        "ADDRESSPOSTALCODE": "88995",
+        "ADDRESSSTREETNAME": "Kreta Ayer Road",
+        "ADDRESSTYPE": null,
+        "ADDRESSUNITNUMBER": "3",
+        "DESCRIPTION": "Family Service Centres",
+        "HYPERLINK": null,
+        "LANDXADDRESSPOINT": null,
+        "LANDYADDRESSPOINT": null,
+        "NAME": "Montfort Care Family Service (Kreta Ayer)",
+        "PHOTOURL": null,
+        "ADDRESSBLOCKHOUSENUMBER": "28A",
+        "TELEPHONE": "6325 4753",
+        "EMAIL": "familyservice@montfortcare.org.sg",
+        "INC_CRC": "A3B9130E71FDEEA6",
+        "FMEL_UPD_D": "20260929190908"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.82147408857288,
+          1.274468657970494
+        ]
+      },
+      "properties": {
+        "OBJECTID": 4485,
+        "ADDRESSBUILDINGNAME": null,
+        "ADDRESSFLOORNUMBER": "1",
+        "ADDRESSPOSTALCODE": "90027",
+        "ADDRESSSTREETNAME": "Telok Blangah Way",
+        "ADDRESSTYPE": null,
+        "ADDRESSUNITNUMBER": "1018",
+        "DESCRIPTION": "Family Service Centres",
+        "HYPERLINK": null,
+        "LANDXADDRESSPOINT": null,
+        "LANDYADDRESSPOINT": null,
+        "NAME": "Montfort Care Family Service (Telok Blangah)",
+        "PHOTOURL": null,
+        "ADDRESSBLOCKHOUSENUMBER": "27",
+        "TELEPHONE": "6270 8327",
+        "EMAIL": "familyservice@montfortcare.org.sg",
+        "INC_CRC": "436F9375E4488CD7",
+        "FMEL_UPD_D": "20260929190908"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.72055751054302,
+          1.3455036523993658
+        ]
+      },
+      "properties": {
+        "OBJECTID": 4481,
+        "ADDRESSBUILDINGNAME": null,
+        "ADDRESSFLOORNUMBER": "1",
+        "ADDRESSPOSTALCODE": "640516",
+        "ADDRESSSTREETNAME": "Jurong West St 52",
+        "ADDRESSTYPE": null,
+        "ADDRESSUNITNUMBER": "73",
+        "DESCRIPTION": "Family Service Centres",
+        "HYPERLINK": null,
+        "LANDXADDRESSPOINT": null,
+        "LANDYADDRESSPOINT": null,
+        "NAME": "Lakeside Family Centre (Jurong West)",
+        "PHOTOURL": null,
+        "ADDRESSBLOCKHOUSENUMBER": "516",
+        "TELEPHONE": "6567 1908",
+        "EMAIL": "lfsjw@lakeside.org.sg",
+        "INC_CRC": "77C2C78648D09A3D",
+        "FMEL_UPD_D": "20260929190908"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.76996181122696,
+          1.31711807920696
+        ]
+      },
+      "properties": {
+        "OBJECTID": 4483,
+        "ADDRESSBUILDINGNAME": null,
+        "ADDRESSFLOORNUMBER": "1",
+        "ADDRESSPOSTALCODE": "120346",
+        "ADDRESSSTREETNAME": "Clementi Ave 5",
+        "ADDRESSTYPE": null,
+        "ADDRESSUNITNUMBER": "10/32",
+        "DESCRIPTION": "Family Service Centres",
+        "HYPERLINK": null,
+        "LANDXADDRESSPOINT": null,
+        "LANDYADDRESSPOINT": null,
+        "NAME": "Foundation of Rotary Clubs (Singapore) (FRCS) Family Service Centre (Clementi)",
+        "PHOTOURL": null,
+        "ADDRESSBLOCKHOUSENUMBER": "346",
+        "TELEPHONE": "6779 9488",
+        "EMAIL": "enquiry@frcsfsc.sg",
+        "INC_CRC": "56A7A6407FE83052",
+        "FMEL_UPD_D": "20261013181456"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.91633650505456,
+          1.3051403051847994
+        ]
+      },
+      "properties": {
+        "OBJECTID": 4484,
+        "ADDRESSBUILDINGNAME": null,
+        "ADDRESSFLOORNUMBER": "1",
+        "ADDRESSPOSTALCODE": "440053",
+        "ADDRESSSTREETNAME": "Marine Terrace",
+        "ADDRESSTYPE": null,
+        "ADDRESSUNITNUMBER": "227",
+        "DESCRIPTION": "Family Service Centres",
+        "HYPERLINK": null,
+        "LANDXADDRESSPOINT": null,
+        "LANDYADDRESSPOINT": null,
+        "NAME": "Montfort Care Family Service (Marine Parade)",
+        "PHOTOURL": null,
+        "ADDRESSBLOCKHOUSENUMBER": "53",
+        "TELEPHONE": "6445 0100",
+        "EMAIL": "familyservice@montfortcare.org.sg",
+        "INC_CRC": "F91A4F985F970B24",
+        "FMEL_UPD_D": "20260929190908"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.88138705499806,
+          1.385901557639632
+        ]
+      },
+      "properties": {
+        "OBJECTID": 4486,
+        "ADDRESSBUILDINGNAME": null,
+        "ADDRESSFLOORNUMBER": "1",
+        "ADDRESSPOSTALCODE": "532997",
+        "ADDRESSSTREETNAME": "Buangkok Crescent",
+        "ADDRESSTYPE": null,
+        "ADDRESSUNITNUMBER": "853",
+        "DESCRIPTION": "Family Service Centres",
+        "HYPERLINK": null,
+        "LANDXADDRESSPOINT": null,
+        "LANDYADDRESSPOINT": null,
+        "NAME": "MWS Covenant Family Service Centre – Buangkok",
+        "PHOTOURL": null,
+        "ADDRESSBLOCKHOUSENUMBER": "997B",
+        "TELEPHONE": "6282 8558",
+        "EMAIL": "MWScfsc@mws.sg",
+        "INC_CRC": "1461D41F15684031",
+        "FMEL_UPD_D": "20260929190908"
+      }
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "type": "FeatureCollection",
+  "name": "SSO",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.95918238440893,
+          1.3688005727684571
+        ]
+      },
+      "properties": {
+        "OBJECTID": 10881,
+        "HYPERLINK": null,
+        "PHOTOURL": null,
+        "UNITNUMBER": "11",
+        "POSTALCODE": "519457",
+        "NAME": "Social Service Office @ Pasir Ris",
+        "BLOCKHOUSENUMBER": "1",
+        "FLOORNUMBER": "#01-",
+        "BUILDINGNAME": "Pasir Ris East Community Building",
+        "STREETNAME": "Pasir Ris Drive 4",
+        "INC_CRC": "C59683577808F0DF",
+        "FMEL_UPD_D": "20260922175719",
+        "DESCRIPTION": "Social Service Offices"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.80620757407047,
+          1.2964584179145409
+        ]
+      },
+      "properties": {
+        "OBJECTID": 10882,
+        "HYPERLINK": null,
+        "PHOTOURL": null,
+        "UNITNUMBER": "01",
+        "POSTALCODE": "140040",
+        "NAME": "Social Service Office @ Queenstown",
+        "BLOCKHOUSENUMBER": "40",
+        "FLOORNUMBER": "#02-",
+        "BUILDINGNAME": null,
+        "STREETNAME": "Margaret Drive",
+        "INC_CRC": "B35ACD4DFF36D7D4",
+        "FMEL_UPD_D": "20241104113604",
+        "DESCRIPTION": "Social Service Offices"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.78661962197066,
+          1.435077885837749
+        ]
+      },
+      "properties": {
+        "OBJECTID": 10883,
+        "HYPERLINK": null,
+        "PHOTOURL": null,
+        "UNITNUMBER": "01A",
+        "POSTALCODE": "730900",
+        "NAME": "Social Service Office @ Woodlands",
+        "BLOCKHOUSENUMBER": "900",
+        "FLOORNUMBER": "#03-",
+        "BUILDINGNAME": "Woodlands Civic Centre",
+        "STREETNAME": "South Woodlands Drive",
+        "INC_CRC": "A486877688CD5708",
+        "FMEL_UPD_D": "20241104113604",
+        "DESCRIPTION": "Social Service Offices"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.75107229986186,
+          1.3600294546811338
+        ]
+      },
+      "properties": {
+        "OBJECTID": 10884,
+        "HYPERLINK": null,
+        "PHOTOURL": null,
+        "UNITNUMBER": "505",
+        "POSTALCODE": "650369",
+        "NAME": "Social Service Office @ Bukit Batok",
+        "BLOCKHOUSENUMBER": "369",
+        "FLOORNUMBER": "#01-",
+        "BUILDINGNAME": null,
+        "STREETNAME": "Bukit Batok St 31",
+        "INC_CRC": "EDAC0A6B385AF56F",
+        "FMEL_UPD_D": "20230426164553",
+        "DESCRIPTION": "Social Service Offices"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.7723979853201,
+          1.3764711725631134
+        ]
+      },
+      "properties": {
+        "OBJECTID": 10885,
+        "HYPERLINK": null,
+        "PHOTOURL": null,
+        "UNITNUMBER": "29",
+        "POSTALCODE": "670232",
+        "NAME": "Social Service Office @ Bukit Panjang",
+        "BLOCKHOUSENUMBER": "232",
+        "FLOORNUMBER": "#01-",
+        "BUILDINGNAME": null,
+        "STREETNAME": "Pending Road",
+        "INC_CRC": "184A2EABF0563682",
+        "FMEL_UPD_D": "20230426164553",
+        "DESCRIPTION": "Social Service Offices"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.7540043521062,
+          1.3808524224071785
+        ]
+      },
+      "properties": {
+        "OBJECTID": 10886,
+        "HYPERLINK": null,
+        "PHOTOURL": null,
+        "UNITNUMBER": null,
+        "POSTALCODE": "681008",
+        "NAME": "Social Service Office @ Chua Chu Kang",
+        "BLOCKHOUSENUMBER": "8A",
+        "FLOORNUMBER": null,
+        "BUILDINGNAME": null,
+        "STREETNAME": "Teck Whye Lane",
+        "INC_CRC": "AF479829AE37AD06",
+        "FMEL_UPD_D": "20230426164553",
+        "DESCRIPTION": "Social Service Offices"
+      }
+    }
+  ]
+}
